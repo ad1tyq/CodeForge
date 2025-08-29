@@ -294,7 +294,7 @@ export function SphinxGame() {
           <CardTitle className="flex items-center gap-3">
             <div className="text-3xl">🐱‍👤</div>
             <div>
-              <h2>The Sphinx of Logic</h2>
+              <h2 className='mb-2 font-semibold'>The Sphinx of Logic</h2>
               <span className="text-sm bg-amber-100 text-amber-800 px-2 py-1 rounded">
                 Riddle {gameState.level + 1}: {currentRiddle.name}
               </span>
@@ -306,7 +306,7 @@ export function SphinxGame() {
             <div className="p-4 bg-amber-100/50 rounded-lg border-l-4 border-amber-400">
               <p className="italic text-amber-900">{currentRiddle.story}</p>
             </div>
-            <div className="p-4 bg-slate-50 rounded-lg">
+            <div className="p-4 bg-slate-50 rounded-lg shadow-sm">
               <strong>Challenge:</strong> {currentRiddle.problem}
             </div>
           </div>
@@ -321,7 +321,7 @@ export function SphinxGame() {
           )}
 
           {gameState.isComplete && (
-            <Alert className="mt-4 border-green-500">
+            <Alert className="mt-4 border-green-500 bg-green-100">
               <CheckCircle className="h-4 w-4" />
               <AlertDescription className="text-green-700">
                 🎉 The Sphinx is pleased! You have solved the riddle with perfect logic!
@@ -333,16 +333,16 @@ export function SphinxGame() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Code Editor */}
-        <Card>
+        <Card className='border-none bg-violet-100 shadow-xl'>
           <CardHeader>
-            <CardTitle>Your Solution</CardTitle>
+            <CardTitle className='font-semibold'>Your Solution</CardTitle>
             <p className="text-sm text-muted-foreground">{currentRiddle.hint}</p>
           </CardHeader>
           <CardContent>
             <textarea
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              className="w-full h-64 p-4 border rounded-lg font-mono text-sm bg-muted/30"
+              className="w-full h-64 p-4 border rounded-lg font-mono text-sm bg-muted/30 border-none bg-white shadow-md"
               placeholder="Write your conditional logic here..."
             />
             
@@ -350,7 +350,7 @@ export function SphinxGame() {
               <Button 
                 onClick={executeCode} 
                 disabled={gameState.isRunning}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 text-white bg-black"
               >
                 <Play className="h-4 w-4" />
                 {gameState.isRunning ? 'Testing...' : 'Test Solution'}
@@ -379,16 +379,16 @@ export function SphinxGame() {
             {showSolution && (
               <div className="mt-4 p-4 bg-amber-50 rounded-lg border border-amber-200">
                 <p className="text-sm mb-2 text-amber-800">The Sphinx reveals the answer:</p>
-                <pre className="text-sm font-mono bg-white p-3 rounded border">{currentRiddle.solution}</pre>
+                <pre className="text-sm font-mono bg-white p-3 rounded border border-none shadow-xl">{currentRiddle.solution}</pre>
               </div>
             )}
           </CardContent>
         </Card>
 
         {/* Test Cases and Visualization */}
-        <Card>
+        <Card className='border-none bg-green-100 shadow-xl'>
           <CardHeader>
-            <CardTitle>Test Chamber</CardTitle>
+            <CardTitle className='font-semibold'>Test Chamber</CardTitle>
             <p className="text-sm text-muted-foreground">The Sphinx tests your logic with these scenarios</p>
           </CardHeader>
           <CardContent>
