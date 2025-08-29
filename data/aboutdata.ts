@@ -1,18 +1,18 @@
 const AboutPoints = [
     {
         image : "../../assets/1-square-fill.svg",
-        title : "Featured Artists",
-        text : "Nucleya, Divine, Ritviz",
+        title : "Gamified Challenges",
+        text : "Learn core concepts like loops, functions, and data structures by solving fun, interactive puzzles and games.",
     },
     {
         image : "../../assets/2-square-fill.svg",
-        title : "Schedule",
-        text : "Doors Open: 6:30 PM | Show Starts: 8:00 PM",
+        title : "Compete & Climb",
+        text : "Earn experience points (XP) for every challenge you solve. Climb the leaderboard and compete with friends.",
     },
     {
         image : "../../assets/3-square-fill.svg",
-        title : "Attendance",
-        text : "Limited to 500 attendees",
-    },
-];
+        title : "Diverse Skill Tracks",
+        text : "Start your journey with Python or JavaScript. Master",
+    }
+]
 export default AboutPoints;

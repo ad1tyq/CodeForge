@@ -6,9 +6,9 @@ function About(){
         <div className="mt-78 flex flex-col text-black items-center gap-15 py-15 pb-15">
             <h1 className="text-center text-xl font-bold md:text-4xl py-3 w-[10rem] border-amber-700 border-b-3 ">About Us</h1>
             <div className="flex gap-10">
-                <div className="flex flex-col gap-5">
-                    <h1 className="font-bold text-2xl">Genesis NFT Concert Experience</h1>
-                    <p className="font-light w-[40vw]">Join us for an unforgettable night featuring top Indian electronic artists and an immersive visual experience at the iconic Jawaharlal Nehru Stadium in New Delhi. This is the first concert in India where your ticket is a collectible NFT, giving you access to exclusive digital content and future events.</p>
+                <div className="flex flex-col w-[40rem] gap-5">
+                    <h1 className="font-bold text-2xl">CodeForge Experience</h1>
+                    <p className="font-light w-[40vw]">Dive into an epic adventure where you master programming through interactive quests and real-time coding battles. CodeForge is the first gamified platform in India that transforms learning into a competitive sport, letting you earn exclusive digital badges and climb the national leaderboard.</p>
                     {AboutPoints.map((point,index)=>{
                         return(
                             <div key={index} className="flex gap-5">

@@ -36,3 +36,9 @@ export function AboutImage(){
        alt="about us" className="w-150 h-120 rounded-lg shadow-lg object-cover"/>
     )
 }
+
+export function UserImage(){
+  return(
+    <Image src="/assets/person-fill.svg" width={60} height={60} alt="user" className="text-white"></Image>
+  )
+}

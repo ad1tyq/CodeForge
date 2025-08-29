@@ -5,9 +5,9 @@ function Intro() {
     const router = useRouter();
     return (
         <div className="flex flex-col item-center pt-42">
-            <h1 className="text-5xl md:text-7xl font-bold text-white text-center z-20">Plantventory</h1>
+            <h1 className="text-5xl md:text-7xl font-bold text-white text-center z-20">CodeForge</h1>
             <p className="text-center text-xl md:text-2xl text-white py-5 z-20">
-                Unlock your green thumb with smart plant tracking and<br />personalized care schedules, right at your fingertips.
+                Level up your coding journey. Master algorithms with interactive games<br />and competitive challenges, designed to make you a better developer.
             </p>
             <div className="flex gap-5 justify-center z-20">
                 <button onClick={()=>router.push('/dashboard')}
