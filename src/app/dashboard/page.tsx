@@ -1,8 +1,9 @@
 // App.tsx
 import React from "react";
-import Navbar from "@/components/nav";
+import Navbar from "@/components/questsnav";
 import Footer from "@/components/footer";
 import Body from "@/components/body";
+import Leaderboard from "@/components/leaderbody";
 
 const App: React.FC = () => {
   return (

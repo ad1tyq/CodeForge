@@ -1,7 +1,10 @@
 import React from "react";
-
+import QuestsBody from "./questbody";
+import CBody from "./combody";
+import Leaderboard from "./leaderbody";
 const Body: React.FC = () => {
   return (
+    <>
     <main className="px-5 md:px-10 lg:px-20 py-16">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         {/* Left Column (Profile + Leaderboard) */}
@@ -18,7 +21,7 @@ const Body: React.FC = () => {
                 Lv. 7
               </span>
             </div>
-            <h2 className="text-3xl text-white mt-2">Alex</h2>
+            <h2 className="text-3xl text-purple mt-2">Aayush nikam</h2>
             <p className="text-base text-[var(--text-secondary)] mb-6">
               1200 / 2000 XP
             </p>
@@ -193,6 +196,12 @@ const Body: React.FC = () => {
         </div>
       </div>
     </main>
+
+    {/*quets */}  
+                  <QuestsBody/>
+                  <CBody/>
+                  <Leaderboard/>
+                  </>
   );
 };
 
