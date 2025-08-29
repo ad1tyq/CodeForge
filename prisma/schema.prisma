@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model User {
+  id          String       @id @default(cuid())
+  email       String       @unique
+  name        String?
+  xp          Int          @default(0) // Experience Points for gamification
+  createdAt   DateTime     @default(now())
+  submissions Submission[]
+}
+
+model Challenge {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  difficulty  String   // e.g., "Easy", "Medium", "Hard"
+  starterCode String   // Boilerplate code for the user
+  testCases   Json     // Store test cases as a JSON object
+  // Example: { "inputs": [[1, 2], [5, 5]], "outputs": [3, 10] }
+  createdAt   DateTime @default(now())
+
+  submissions Submission[]
+}
+
+model Submission {
+  id          String    @id @default(cuid())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challengeId String
+  code        String    // The code submitted by the user
+  passed      Boolean   // Did it pass all test cases?
+  submittedAt DateTime  @default(now())
+}
