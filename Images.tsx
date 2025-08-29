@@ -32,7 +32,7 @@ export function Mail(){
 
 export function AboutImage(){
     return(
-      <Image src="/bg/bg1.png" width={99} height={99} style={{ objectFit: 'cover' }}
+      <Image src="/bg/bg1.jpg" width={99} height={99} style={{ objectFit: 'cover' }}
        alt="about us" className="w-150 h-120 rounded-lg shadow-lg object-cover"/>
     )
 }
