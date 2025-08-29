@@ -52,7 +52,7 @@ export function GameSelector() {
   return (
     <div className="w-full max-w-4xl mx-auto p-6 space-y-8">
       <div className="text-center space-y-4">
-        <h1>🎮 Coding Quest Academy</h1>
+        <h1 className='font-bold'>🎮 Coding Quest Academy</h1>
         <p className="text-muted-foreground text-lg">
           Master programming fundamentals through interactive challenges and puzzles!
         </p>
@@ -62,9 +62,9 @@ export function GameSelector() {
         <Card className="hover:shadow-lg transition-shadow cursor-pointer bg-gradient-to-br from-blue-50 to-green-50 border-blue-200">
           <CardHeader>
             <CardTitle className="flex items-center gap-3">
-              <div className="text-3xl">🌉</div>
+              <div className="text-4xl">🌉</div>
               <div>
-                <h2>The Broken Bridge</h2>
+                <h2 className='pb-2'>The Broken Bridge</h2>
                 <span className="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded">
                   Loops & Iteration
                 </span>
@@ -91,7 +91,7 @@ export function GameSelector() {
 
               <Button 
                 onClick={() => setCurrentGame('bridge')}
-                className="w-full"
+                className="w-full bg-sky-200 hover:background-blur-md rounded-xl shadow-md transition-all duration-300 ease-in-out hover:border-white/30 hover:shadow-xl"
               >
                 Start Bridge Challenge
               </Button>
@@ -102,9 +102,9 @@ export function GameSelector() {
         <Card className="hover:shadow-lg transition-shadow cursor-pointer bg-gradient-to-br from-amber-50 to-orange-50 border-amber-200">
           <CardHeader>
             <CardTitle className="flex items-center gap-3">
-              <div className="text-3xl">🐱‍👤</div>
+              <div className="text-4xl">🐱‍👤</div>
               <div>
-                <h2>The Sphinx of Logic</h2>
+                <h2 className='pb-2'>The Sphinx of Logic</h2>
                 <span className="text-sm bg-amber-100 text-amber-800 px-2 py-1 rounded">
                   Conditionals & Logic
                 </span>
@@ -131,7 +131,7 @@ export function GameSelector() {
 
               <Button 
                 onClick={() => setCurrentGame('sphinx')}
-                className="w-full"
+                className="w-full bg-amber-200 hover:background-blur-md rounded-xl shadow-md transition-all duration-300 ease-in-out hover:border-white/30   hover:shadow-xl"
                 variant="default"
               >
                 Face the Sphinx
@@ -142,7 +142,7 @@ export function GameSelector() {
       </div>
 
       <div className="text-center pt-8">
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-muted rounded-lg">
+        <div className="inline-flex items-center px-4  bg-muted rounded-lg">
           <span className="text-sm text-muted-foreground">
             More challenges coming soon! Master these fundamentals first. 🚀
           </span>

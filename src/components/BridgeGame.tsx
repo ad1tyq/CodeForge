@@ -259,7 +259,7 @@ export function BridgeGame() {
     <div className="w-full max-w-6xl mx-auto p-6 space-y-6">
       <CodingTips />
       
-      <Card>
+      <Card className='bacground-blur-md border-none shadow-xl'>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             🌉 The Broken Bridge Challenge
@@ -281,7 +281,7 @@ export function BridgeGame() {
           )}
 
           {gameState.isComplete && (
-            <Alert className="mb-4 border-green-500">
+            <Alert className="mb-4 border-none bg-green-200">
               <CheckCircle className="h-4 w-4" />
               <AlertDescription className="text-green-700">
                 🎉 Bridge completed successfully! Well done!
@@ -293,16 +293,16 @@ export function BridgeGame() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Code Editor */}
-        <Card>
+        <Card className='border-none bg-blue-100'>
           <CardHeader>
-            <CardTitle>Code Editor</CardTitle>
+            <CardTitle className='font-semibold'>Code Editor</CardTitle>
             <p className="text-sm text-muted-foreground">{currentLevel.hint}</p>
           </CardHeader>
           <CardContent>
             <textarea
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              className="w-full h-48 p-4 border rounded-lg font-mono text-sm bg-muted/30"
+              className="w-full bg-white h-48 p-4 border rounded-lg shadow-xl border-none font-mono text-sm bg-muted/30"
               placeholder="Write your loop here..."
             />
             
@@ -310,7 +310,7 @@ export function BridgeGame() {
               <Button 
                 onClick={executeCode} 
                 disabled={gameState.isRunning}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 text-white bg-black"
               >
                 <Play className="h-4 w-4" />
                 {gameState.isRunning ? 'Building...' : 'Run Code'}
@@ -329,7 +329,7 @@ export function BridgeGame() {
               </Button>
 
               {gameState.isComplete && gameState.level < levels.length - 1 && (
-                <Button onClick={nextLevel} className="ml-auto">
+                <Button onClick={nextLevel} className="ml-auto text-white bg-black">
                   Next Level →
                 </Button>
               )}
@@ -345,14 +345,14 @@ export function BridgeGame() {
         </Card>
 
         {/* Bridge Visualization */}
-        <Card>
+        <Card className='bg-violet-100 border-none'>
           <CardHeader>
-            <CardTitle>Bridge Visualization</CardTitle>
+            <CardTitle className='font-semibold'>Bridge Visualization</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col items-center">
               {/* Bridge Structure */}
-              <svg width="400" height="200" className="border rounded-lg bg-sky-100">
+              <svg width="400" height="200" className="border rounded-lg bg-sky-100 border-none shadow-xl mt-3">
                 {/* Sky background */}
                 <rect width="400" height="200" fill="#e0f2fe" />
                 
