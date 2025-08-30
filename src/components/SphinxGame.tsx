@@ -252,6 +252,7 @@ const executeCode = async () => {
           return;
         }
       } catch (error) {
+        console.error(error)
         results.push({
           passed: false,
           result: 'ERROR',
@@ -279,6 +280,7 @@ const executeCode = async () => {
     }));
 
   } catch (error) {
+    console.error(error)
     setGameState(prev => ({
       ...prev,
       error: "Code syntax error! Check your function structure.",

@@ -17,14 +17,11 @@ export function ImageWithFallback(props: ImageWithFallbackProps) {
     setDidError(true)
   }
 
-  const { src, alt, style, className, fallbackSrc = ERROR_IMG_SRC, ...rest } = props
+  // Extract width and height first to avoid the rest conflict
+  const { src, alt, style, className, fallbackSrc = ERROR_IMG_SRC, width: propWidth, height: propHeight, ...rest } = props
 
-  // Extract width and height from rest props and convert to numbers if needed
-  const width = rest.width ? Number(rest.width) : 50;
-  const height = rest.height ? Number(rest.height) : 50;
-
-  // Remove width and height from rest to avoid conflicts
-  const { width: _, height: __, ...filteredRest } = rest;
+  const width = propWidth ? Number(propWidth) : 50;
+  const height = propHeight ? Number(propHeight) : 50;
 
   return didError ? (
     <div
@@ -37,7 +34,7 @@ export function ImageWithFallback(props: ImageWithFallbackProps) {
           height={height} 
           src={fallbackSrc} 
           alt="Error loading image" 
-          {...filteredRest} 
+          {...rest} 
           data-original-url={src} 
         />
       </div>
@@ -50,7 +47,7 @@ export function ImageWithFallback(props: ImageWithFallbackProps) {
       alt={alt || ''} 
       className={className} 
       style={style} 
-      {...filteredRest} 
+      {...rest} 
       onError={handleError} 
     />
   )
