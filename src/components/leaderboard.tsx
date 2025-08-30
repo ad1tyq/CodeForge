@@ -20,7 +20,7 @@ export default function Leaderboard() {
                     <tbody>
                         {sortedLeaderboard.map((user) => {
                             return (
-                                <tr className="border-t">
+                                <tr className="border-t" key={user.id}>
                                     <td className="p-3 font-bold text-[var(--accent-amethyst)]">
                                         {rank+=1}
                                     </td>
