@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from './gamecomp/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './gamecomp/ui/card';
 import { Alert, AlertDescription } from './gamecomp/ui/alert';
@@ -232,6 +232,7 @@ export function BridgeGame() {
       }, 1000);
 
     } catch (error) {
+      console.log(error)
       setGameState(prev => ({ 
         ...prev, 
         error: "Code error! Check your syntax.",

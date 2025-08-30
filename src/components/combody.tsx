@@ -1,3 +1,4 @@
+import Image from "next/image";
 const CBody: React.FC = () => {
   return (
     <main className="px-10 md:px-20 lg:px-40 flex flex-1 justify-center py-8">
@@ -110,10 +111,11 @@ const CBody: React.FC = () => {
               key={idx}
               className="flex items-center gap-4 bg-[#1e1e21] p-4 rounded-lg hover:bg-[#2a2a2e] transition-colors cursor-pointer"
             >
-              <img
+              <Image
+                src={post.img}
+                width={10} height={10}
                 alt="User avatar"
                 className="rounded-full size-12 object-cover"
-                src={post.img}
               />
               <div className="flex-1">
                 <p className="text-white font-semibold">{post.title}</p>

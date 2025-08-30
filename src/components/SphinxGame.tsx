@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from './gamecomp/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './gamecomp/ui/card';
 import { Alert, AlertDescription } from './gamecomp/ui/alert';
@@ -248,6 +248,7 @@ export function SphinxGame() {
             return;
           }
         } catch (error) {
+          console.log(error)
           results.push({
             passed: false,
             result: 'ERROR',
@@ -275,6 +276,7 @@ export function SphinxGame() {
       }));
 
     } catch (error) {
+      console.log(error)
       setGameState(prev => ({
         ...prev,
         error: "Code syntax error! Check your function structure.",
