@@ -5,6 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from './gamecomp/ui/card';
 import { Alert, AlertDescription } from './gamecomp/ui/alert';
 import { Play, RotateCcw, CheckCircle, AlertTriangle, Eye } from 'lucide-react';
 import { ConditionalTips } from './ConditionalTips';
+import XP from './gamecomp/XP';
+import { useXP } from '../contexts/XPcontext.tsx';
+import { useGameTwo } from '@/contexts/GameTwoContext.tsx';
 
 interface GameState {
   level: number;
@@ -155,8 +158,10 @@ const riddles: Riddle[] = [
 ];
 
 export function SphinxGame() {
+  const { setXP } = useXP();
+  const { GameTwo, setGameTwo } = useGameTwo(); // added this
   const [gameState, setGameState] = useState<GameState>({
-    level: 0,
+    level: GameTwo,
     isRunning: false,
     isComplete: false,
     isFailed: false,
@@ -200,6 +205,9 @@ export function SphinxGame() {
         currentStep: 0,
         executionSteps: []
       });
+
+      setGameTwo(nextLevel);
+
       setCode(riddles[nextLevel].starterCode);
       setShowSolution(false);
       setTestResults([]);
@@ -279,6 +287,8 @@ const executeCode = async () => {
       executionSteps: steps
     }));
 
+    setXP(prevXP => prevXP+200); // added this
+
   } catch (error) {
     console.error(error)
     setGameState(prev => ({
@@ -292,6 +302,7 @@ const executeCode = async () => {
 
   return (
     <div className="w-full max-w-6xl mx-auto p-6 space-y-6">
+      <XP/>
       <ConditionalTips />
 
       {/* Sphinx Header */}
