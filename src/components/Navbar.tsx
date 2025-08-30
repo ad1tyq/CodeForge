@@ -1,7 +1,6 @@
 "use client";
 import CustomLink from "./CustomLink";
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { useSession, signIn } from "next-auth/react"
 import SignOut from "./SignOut";
 
@@ -41,6 +40,9 @@ function Navbar() {
                         </CustomLink>
                         <CustomLink href="/quests">
                             <span className="py-2 pr-2 pl-3">Quests</span>
+                        </CustomLink>
+                        <CustomLink href="/community">
+                            <span className="py-2 pr-2 pl-3">Community</span>
                         </CustomLink>
                     </>
                 ) : (

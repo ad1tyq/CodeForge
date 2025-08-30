@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from './gamecomp/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './gamecomp/ui/card';
 import { Alert, AlertDescription } from './gamecomp/ui/alert';
@@ -28,8 +28,8 @@ interface Riddle {
 
 interface TestCase {
   description: string;
-  variables: Record<string, any>;
-  expectedResult: any;
+  variables: Record<string, string | number | boolean>;
+  expectedResult: string | number | boolean;
   explanation: string;
 }
 
@@ -167,7 +167,11 @@ export function SphinxGame() {
 
   const [code, setCode] = useState(riddles[0].starterCode);
   const [showSolution, setShowSolution] = useState(false);
-  const [testResults, setTestResults] = useState<Array<{passed: boolean, result: any, expected: any}>>([]);
+  const [testResults, setTestResults] = useState<Array<{
+    passed: boolean;
+    result: string | number | boolean; // Specify possible types
+    expected: string | number | boolean; // Specify possible types
+  }>>([]);
 
   const currentRiddle = riddles[gameState.level];
 
@@ -202,92 +206,94 @@ export function SphinxGame() {
     }
   };
 
-  const executeCode = async () => {
-    if (gameState.isRunning) return;
+const executeCode = async () => {
+  if (gameState.isRunning) return;
 
-    resetGame();
-    setGameState(prev => ({ ...prev, isRunning: true }));
+  resetGame();
+  setGameState(prev => ({ ...prev, isRunning: true }));
 
-    try {
-      // Create function from code
-      const functionCode = code.replace(/function\s+\w+/, 'function testFunction');
-      const func = new Function('return ' + functionCode)();
+  try {
+    // Create function from code
+    const functionCode = code.replace(/function\s+\w+/, 'function testFunction');
+    const func = new Function('return ' + functionCode)();
 
-      const results: Array<{passed: boolean, result: any, expected: any}> = [];
-      const steps: string[] = [];
+    const results: Array<{passed: boolean, result: string | number | boolean, expected: string | number | boolean}> = [];
+    const steps: string[] = [];
 
-      // Test each case
-      for (let i = 0; i < currentRiddle.testCases.length; i++) {
-        const testCase = currentRiddle.testCases[i];
+    // Test each case
+    for (let i = 0; i < currentRiddle.testCases.length; i++) {
+      const testCase = currentRiddle.testCases[i];
+      
+      setGameState(prev => ({ ...prev, currentStep: i }));
+      await new Promise(resolve => setTimeout(resolve, 800));
+
+      try {
+        const args = Object.values(testCase.variables);
+        const result = func(...args);
+        const passed = result === testCase.expectedResult;
         
-        setGameState(prev => ({ ...prev, currentStep: i }));
-        await new Promise(resolve => setTimeout(resolve, 800));
+        results.push({
+          passed,
+          result,
+          expected: testCase.expectedResult
+        });
 
-        try {
-          const args = Object.values(testCase.variables);
-          const result = func(...args);
-          const passed = result === testCase.expectedResult;
-          
-          results.push({
-            passed,
-            result,
-            expected: testCase.expectedResult
-          });
-
-          steps.push(`Test ${i + 1}: ${testCase.description} - ${passed ? '✅ PASSED' : '❌ FAILED'}`);
-          
-          if (!passed) {
-            setGameState(prev => ({
-              ...prev,
-              isFailed: true,
-              error: `Test failed: ${testCase.description}. Expected "${testCase.expectedResult}" but got "${result}".`,
-              executionSteps: steps
-            }));
-            setTestResults(results);
-            setGameState(prev => ({ ...prev, isRunning: false }));
-            return;
-          }
-        } catch (error) {
-          results.push({
-            passed: false,
-            result: 'ERROR',
-            expected: testCase.expectedResult
-          });
+        steps.push(`Test ${i + 1}: ${testCase.description} - ${passed ? '✅ PASSED' : '❌ FAILED'}`);
+        
+        if (!passed) {
           setGameState(prev => ({
             ...prev,
             isFailed: true,
-            error: `Runtime error in test case: ${testCase.description}`,
+            error: `Test failed: ${testCase.description}. Expected "${testCase.expectedResult}" but got "${result}".`,
             executionSteps: steps
           }));
           setTestResults(results);
           setGameState(prev => ({ ...prev, isRunning: false }));
           return;
         }
+      } catch (error) {
+        console.error(error)
+        results.push({
+          passed: false,
+          result: 'ERROR',
+          expected: testCase.expectedResult
+        });
+        setGameState(prev => ({
+          ...prev,
+          isFailed: true,
+          error: `Runtime error in test case: ${testCase.description}`,
+          executionSteps: steps
+        }));
+        setTestResults(results);
+        setGameState(prev => ({ ...prev, isRunning: false }));
+        return;
       }
-
-      // All tests passed
-      setTestResults(results);
-      setGameState(prev => ({
-        ...prev,
-        isComplete: true,
-        isRunning: false,
-        executionSteps: steps
-      }));
-
-    } catch (error) {
-      setGameState(prev => ({
-        ...prev,
-        error: "Code syntax error! Check your function structure.",
-        isRunning: false,
-        isFailed: true
-      }));
     }
-  };
+
+    // All tests passed
+    setTestResults(results);
+    setGameState(prev => ({
+      ...prev,
+      isComplete: true,
+      isRunning: false,
+      executionSteps: steps
+    }));
+
+  } catch (error) {
+    console.error(error)
+    setGameState(prev => ({
+      ...prev,
+      error: "Code syntax error! Check your function structure.",
+      isRunning: false,
+      isFailed: true
+    }));
+  }
+};
 
   return (
     <div className="w-full max-w-6xl mx-auto p-6 space-y-6">
       <ConditionalTips />
-      
+
       {/* Sphinx Header */}
       <Card className="bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
         <CardHeader>
@@ -345,24 +351,24 @@ export function SphinxGame() {
               className="w-full h-64 p-4 border rounded-lg font-mono text-sm bg-muted/30 border-none bg-white shadow-md"
               placeholder="Write your conditional logic here..."
             />
-            
+
             <div className="flex gap-2 mt-4">
-              <Button 
-                onClick={executeCode} 
+              <Button
+                onClick={executeCode}
                 disabled={gameState.isRunning}
                 className="flex items-center gap-2 text-white bg-black"
               >
                 <Play className="h-4 w-4" />
                 {gameState.isRunning ? 'Testing...' : 'Test Solution'}
               </Button>
-              
+
               <Button variant="outline" onClick={resetGame}>
                 <RotateCcw className="h-4 w-4" />
                 Reset
               </Button>
 
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => setShowSolution(!showSolution)}
               >
                 <Eye className="h-4 w-4" />
@@ -394,31 +400,29 @@ export function SphinxGame() {
           <CardContent>
             <div className="space-y-4">
               {currentRiddle.testCases.map((testCase, index) => (
-                <div 
+                <div
                   key={index}
-                  className={`p-4 rounded-lg border-2 transition-all ${
-                    gameState.isRunning && gameState.currentStep === index
+                  className={`p-4 rounded-lg border-2 transition-all ${gameState.isRunning && gameState.currentStep === index
                       ? 'border-blue-400 bg-blue-50 animate-pulse'
                       : testResults[index]?.passed === true
-                      ? 'border-green-400 bg-green-50'
-                      : testResults[index]?.passed === false
-                      ? 'border-red-400 bg-red-50'
-                      : 'border-gray-200 bg-gray-50'
-                  }`}
+                        ? 'border-green-400 bg-green-50'
+                        : testResults[index]?.passed === false
+                          ? 'border-red-400 bg-red-50'
+                          : 'border-gray-200 bg-gray-50'
+                    }`}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <strong className="text-sm">Test {index + 1}: {testCase.description}</strong>
                     {testResults[index] && (
-                      <span className={`text-xs px-2 py-1 rounded ${
-                        testResults[index].passed 
-                          ? 'bg-green-100 text-green-800' 
+                      <span className={`text-xs px-2 py-1 rounded ${testResults[index].passed
+                          ? 'bg-green-100 text-green-800'
                           : 'bg-red-100 text-red-800'
-                      }`}>
+                        }`}>
                         {testResults[index].passed ? '✅ PASS' : '❌ FAIL'}
                       </span>
                     )}
                   </div>
-                  
+
                   <div className="text-sm space-y-1">
                     <div><strong>Input:</strong> {JSON.stringify(testCase.variables)}</div>
                     <div><strong>Expected:</strong> {testCase.expectedResult}</div>
@@ -433,11 +437,10 @@ export function SphinxGame() {
 
             {/* Sphinx Animation */}
             <div className="flex justify-center mt-6">
-              <div className={`text-6xl transition-all duration-1000 ${
-                gameState.isComplete ? 'animate-bounce' : 
-                gameState.isFailed ? 'animate-pulse' :
-                gameState.isRunning ? 'animate-pulse' : ''
-              }`}>
+              <div className={`text-6xl transition-all duration-1000 ${gameState.isComplete ? 'animate-bounce' :
+                  gameState.isFailed ? 'animate-pulse' :
+                    gameState.isRunning ? 'animate-pulse' : ''
+                }`}>
                 {gameState.isComplete ? '😸' : gameState.isFailed ? '😾' : '🐱‍👤'}
               </div>
             </div>

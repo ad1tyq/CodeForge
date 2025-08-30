@@ -1,5 +1,6 @@
 import React from "react";
 import { UserImage } from "../../Images";
+import Image from "next/image";
 const Body: React.FC = () => {
   return (
     <>
@@ -89,8 +90,9 @@ const Body: React.FC = () => {
             <div className="card p-10">
               <h2 className="text-3xl text-white mb-6">Continue Your Quest</h2>
               <div className="flex flex-col md:flex-row gap-8">
-                <img
+                <Image
                   alt="Quest Image"
+                  width={100} height={100}
                   className="w-full md:w-1/3 h-auto object-cover rounded-2xl border border-white/10"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWRmrLBEBZDNHEGFdLuPl962s5HGrs5tHwj2AyeseBQo9Dv0pAdXGq3xY1YGEHuwjlwDRCvKOMvq5fVI1lDEuPfvwlhbmZpYbqLzkTgQWBG6jr9ZzJnwXQLXQE8_PmO87U77iUFrBEO3q_H9jprBvArhhlWoxMBy8f-RI1YZCRWoPpdLE59jlZb3WumdNTKpl7LOJ2WicwW1h7Hhzz2L88HVX-dpQLdOxwoSpLFt5MfLITausFWmNW3o5qlj9s4b0yVOE1fVTZ_zQ"
                 />
