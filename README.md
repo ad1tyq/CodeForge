@@ -5,7 +5,7 @@ We are team Simpsons and this is our prototype for round 1 of the HackForge hack
 
 ### About the project
 
-PrescriptCheck is an AI-powered web application designed to act as a real-time safety auditor for medical prescriptions. The system provides a critical layer of verification to prevent common but dangerous medication errors.
+CodeForge is an interactive, gamified platform designed to be the ultimate training ground for aspiring developers. The system replaces traditional, passive learning with hands-on coding challenges, real-time feedback, and competitive leaderboards, providing a critical layer of engagement to prevent the loss of motivation that derails most new coders.
 
 ## Getting Started
 
