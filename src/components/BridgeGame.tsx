@@ -5,6 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from './gamecomp/ui/card';
 import { Alert, AlertDescription } from './gamecomp/ui/alert';
 import { Play, RotateCcw, CheckCircle, AlertTriangle } from 'lucide-react';
 import { CodingTips } from './CodingTips';
+import XP from './gamecomp/XP';
+import { useXP } from '../contexts/XPcontext.tsx';
+import { useLevel } from '@/contexts/LevelContext.tsx'; // added this
 
 interface GameState {
   level: number;
@@ -61,8 +64,10 @@ const levels: Level[] = [
 ];
 
 export function BridgeGame() {
+  const { setXP } = useXP();
+  const { Level, setLevel } = useLevel(); // added this
   const [gameState, setGameState] = useState<GameState>({
-    level: 0,
+    level: Level,
     planks: new Array(levels[0].bridgeLength).fill(false),
     isRunning: false,
     currentPlank: 0,
@@ -73,6 +78,7 @@ export function BridgeGame() {
 
   const [code, setCode] = useState(levels[0].starterCode);
   const [showSolution, setShowSolution] = useState(false);
+
 
   const currentLevel = levels[gameState.level];
 
@@ -101,6 +107,9 @@ export function BridgeGame() {
         isBroken: false,
         error: ''
       });
+
+      setLevel(nextLevelIndex) // added this
+
       setCode(nextLevel.starterCode);
       setShowSolution(false);
     }
@@ -216,6 +225,9 @@ export function BridgeGame() {
             isComplete: true, 
             isRunning: false 
           }));
+
+          setXP(prevXP => prevXP+200); // increasing XP
+
         } else if (plankPositions.length === 0) {
           setGameState(prev => ({ 
             ...prev, 
@@ -258,6 +270,7 @@ export function BridgeGame() {
 
   return (
     <div className="w-full max-w-6xl mx-auto p-6 space-y-6">
+      <XP/>
       <CodingTips />
       
       <Card className='bacground-blur-md border-none shadow-xl'>
