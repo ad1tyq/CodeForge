@@ -7,7 +7,7 @@ function Page(){
       const { data: session } = useSession();
   if (!session) {
     return (
-      <div className="relative flex size-full min-h-screen flex-col overflow-x-hidden bg-[var(--background-dark)] text-[var(--text-primary)]">
+      <div className="relative bg-black flex size-full min-h-screen flex-col overflow-x-hidden text-[var(--text-primary)]">
         <div className="flex flex-col items-center">
           <div className="shadow-lg bg-gray-800 mt-10 rounded-[10px] w-[auto]
             text-[clamp(0.9rem,1.1vw,1.1rem)] h-auto py-10 px-8 gap-5 flex flex-col justify-center">
