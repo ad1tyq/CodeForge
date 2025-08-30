@@ -15,7 +15,7 @@ This application is also deployed here in vercel [https://code-forge-ecru.vercel
 
 1. **Clone the repository** (if not already done):
    ```bash
-   git clone https://github.com/ad1tyq/ScriptCheck
+   git clone https://github.com/ad1tyq/CodeForge
    ```
 
 2. **Install dependencies**:
