@@ -53,7 +53,7 @@ export default function Error({
                         </ul>
                         <div className="flex justify-center">
                             <Link href="/"
-                                className="rounded cursor-pointer hover:bg-gray-400 hover:text-gray-600 px-5 py-[2px] font-semibold text-lg mt-5 text-gray-500 bg-gray-300">home
+                                className="rounded cursor-pointer hover:bg-gray-400 hover:text-gray-700 px-5 py-[2px] font-semibold text-lg mt-5 text-gray-800 bg-gray-300">home
                             </Link>
                         </div>
                     </div>
