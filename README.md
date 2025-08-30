@@ -9,7 +9,7 @@ CodeForge is an interactive, gamified platform designed to be the ultimate train
 
 ## Getting Started
 
-This application is also deployed in vercel here [https://code-forge-ecru.vercel.app/](https://code-forge-ecru.vercel.app/)
+This application is also deployed here in vercel [https://code-forge-ecru.vercel.app/](https://code-forge-ecru.vercel.app/)
 
 ### Installation
 
