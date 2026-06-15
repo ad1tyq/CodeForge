@@ -1,5 +1,12 @@
 ## Team Simpsons - CodeForge
+
 ### About the team
+
+Teammates:
+Sasha Bahurupi
+Aditya Bhardwaj
+Aayush Vijay Nikam
+Shaunjit Chakraborti 
 
 We are team Simpsons and this is our prototype for round 1 of the HackForge hackathon under the theme Education & Skill Development: Gamified Coding Practice Platform.
 
