@@ -1,6 +1,6 @@
 "use client"
 import { useXP } from "../../contexts/XPcontext.tsx"
-function XP(){
+function XPfunc(){
     const { XP } = useXP();
     return(
         <div className="bg-amber-400 flex justify-center rounded-2xl">
@@ -8,4 +8,4 @@ function XP(){
         </div>
     )
 }
-export default XP;
+export default XPfunc;

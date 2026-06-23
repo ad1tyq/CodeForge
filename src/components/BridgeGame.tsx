@@ -1,11 +1,11 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from './gamecomp/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './gamecomp/ui/card';
 import { Alert, AlertDescription } from './gamecomp/ui/alert';
 import { Play, RotateCcw, CheckCircle, AlertTriangle } from 'lucide-react';
 import { CodingTips } from './CodingTips';
-import XP from './gamecomp/XP';
+import XPfunc from './gamecomp/XP';
 import { useXP } from '../contexts/XPcontext.tsx';
 import { useLevel } from '@/contexts/LevelContext.tsx'; // added this
 
@@ -64,7 +64,7 @@ const levels: Level[] = [
 ];
 
 export function BridgeGame() {
-  const { setXP } = useXP();
+  const { XP, setXP } = useXP();
   const { Level, setLevel } = useLevel(); // added this
   const [gameState, setGameState] = useState<GameState>({
     level: Level,
@@ -150,16 +150,18 @@ export function BridgeGame() {
       if (standardLoop) {
         const startNum = parseInt(standardLoop[1]);
         const endNum = parseInt(standardLoop[2]);
-        
+
         for (let i = startNum; i < endNum; i++) {
           currentPos = i;
-          
+
           // Handle if statements
           if (body.includes('if')) {
             const conditions = [
               { pattern: /if\s*\(\s*i\s*%\s*2\s*===\s*0\s*\)/, test: (i: number) => i % 2 === 0 },
-              { pattern: /if\s*\(\s*i\s*===\s*1\s*\|\|\s*i\s*===\s*2\s*\|\|\s*i\s*===\s*5\s*\|\|\s*i\s*===\s*6\s*\)/, 
-                test: (i: number) => [1, 2, 5, 6].includes(i) }
+              {
+                pattern: /if\s*\(\s*i\s*===\s*1\s*\|\|\s*i\s*===\s*2\s*\|\|\s*i\s*===\s*5\s*\|\|\s*i\s*===\s*6\s*\)/,
+                test: (i: number) => [1, 2, 5, 6].includes(i)
+              }
             ];
 
             const matchedCondition = conditions.find(cond => cond.pattern.test(body));
@@ -179,7 +181,7 @@ export function BridgeGame() {
         const startNum = parseInt(incrementLoop[1]);
         const endNum = parseInt(incrementLoop[2]);
         const increment = parseInt(incrementLoop[3]);
-        
+
         for (let i = startNum; i < endNum; i += increment) {
           currentPos = i;
           if (body.includes('placePlank()')) {
@@ -191,12 +193,12 @@ export function BridgeGame() {
       // Animate plank placement
       for (let i = 0; i < plankPositions.length; i++) {
         const position = plankPositions[i];
-        
+
         if (position >= currentLevel.bridgeLength) {
           // Bridge breaks - trying to place plank outside bounds
-          setGameState(prev => ({ 
-            ...prev, 
-            isBroken: true, 
+          setGameState(prev => ({
+            ...prev,
+            isBroken: true,
             error: `Bridge broke! Tried to place plank at position ${position}, but bridge only has ${currentLevel.bridgeLength} positions.`,
             isRunning: false
           }));
@@ -204,7 +206,7 @@ export function BridgeGame() {
         }
 
         await new Promise(resolve => setTimeout(resolve, 500));
-        
+
         setGameState(prev => ({
           ...prev,
           planks: prev.planks.map((plank, index) => index === position ? true : plank),
@@ -215,40 +217,40 @@ export function BridgeGame() {
       // Check if bridge is complete (all required planks placed)
       setTimeout(() => {
         const requiredPlanks = getCurrentLevelRequiredPlanks();
-        const placedCorrectly = requiredPlanks.every((required, index) => 
+        const placedCorrectly = requiredPlanks.every((required, index) =>
           required ? gameState.planks[index] || plankPositions.includes(index) : true
         );
 
         if (placedCorrectly && plankPositions.length > 0) {
-          setGameState(prev => ({ 
-            ...prev, 
-            isComplete: true, 
-            isRunning: false 
+          setGameState(prev => ({
+            ...prev,
+            isComplete: true,
+            isRunning: false
           }));
 
-          setXP(prevXP => prevXP+200); // increasing XP
+          setXP(prevXP => prevXP + 200); // increasing XP
 
         } else if (plankPositions.length === 0) {
-          setGameState(prev => ({ 
-            ...prev, 
+          setGameState(prev => ({
+            ...prev,
             error: "No planks were placed! Check your loop logic.",
-            isRunning: false 
+            isRunning: false
           }));
         } else {
-          setGameState(prev => ({ 
-            ...prev, 
+          setGameState(prev => ({
+            ...prev,
             error: "Bridge incomplete or planks placed incorrectly!",
-            isRunning: false 
+            isRunning: false
           }));
         }
       }, 1000);
 
     } catch (error) {
       console.log(error)
-      setGameState(prev => ({ 
-        ...prev, 
+      setGameState(prev => ({
+        ...prev,
         error: "Code error! Check your syntax.",
-        isRunning: false 
+        isRunning: false
       }));
     }
   };
@@ -268,11 +270,32 @@ export function BridgeGame() {
     }
   };
 
+  // Replace these lines in both SphinxGame and BridgeGame
+  useEffect(() => {
+    const datToDataBase = async () => {
+      try {
+        await fetch('/api/add-xp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ xp: XP, bridgeLevel: Level }), // Use proper variable names
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    if (XP > 0 || Level > 0) { // Only call if there are changes
+      datToDataBase();
+      console.log("added bridge data")
+    }
+  }, [{ xp: XP, bridgeLevel: Level }]); // Correct dependencies
+
+
   return (
     <div className="w-full max-w-6xl mx-auto p-6 space-y-6">
-      <XP/>
+      <XPfunc />
       <CodingTips />
-      
+
       <Card className='bacground-blur-md border-none shadow-xl'>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -284,7 +307,7 @@ export function BridgeGame() {
         </CardHeader>
         <CardContent>
           <p className="mb-4">{currentLevel.description}</p>
-          
+
           {gameState.error && (
             <Alert className="mb-4 border-destructive">
               <AlertTriangle className="h-4 w-4" />
@@ -319,24 +342,24 @@ export function BridgeGame() {
               className="w-full bg-white h-48 p-4 border rounded-lg shadow-xl border-none font-mono text-sm bg-muted/30"
               placeholder="Write your loop here..."
             />
-            
+
             <div className="flex gap-2 mt-4">
-              <Button 
-                onClick={executeCode} 
+              <Button
+                onClick={executeCode}
                 disabled={gameState.isRunning}
                 className="flex items-center gap-2 text-white bg-black"
               >
                 <Play className="h-4 w-4" />
                 {gameState.isRunning ? 'Building...' : 'Run Code'}
               </Button>
-              
+
               <Button variant="outline" onClick={resetGame}>
                 <RotateCcw className="h-4 w-4" />
                 Reset
               </Button>
 
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => setShowSolution(!showSolution)}
               >
                 {showSolution ? 'Hide' : 'Show'} Solution
@@ -369,19 +392,19 @@ export function BridgeGame() {
               <svg width="400" height="200" className="border rounded-lg bg-sky-100 border-none shadow-xl mt-3">
                 {/* Sky background */}
                 <rect width="400" height="200" fill="#e0f2fe" />
-                
+
                 {/* Ground/Cliffs */}
                 <rect x="0" y="150" width="80" height="50" fill="#8b5a2b" />
                 <rect x="320" y="150" width="80" height="50" fill="#8b5a2b" />
-                
+
                 {/* Bridge supports */}
                 <line x1="80" y1="150" x2="320" y2="150" stroke="#654321" strokeWidth="4" />
-                
+
                 {/* Bridge planks */}
                 {gameState.planks.map((isPlaced, index) => {
                   const x = 80 + (index * (240 / currentLevel.bridgeLength));
                   const width = (240 / currentLevel.bridgeLength) - 2;
-                  
+
                   if (isPlaced) {
                     return (
                       <rect
@@ -421,7 +444,7 @@ export function BridgeGame() {
                   {/* Builder's tool */}
                   <rect x="54" y="138" width="6" height="2" fill="#8b4513" />
                 </g>
-                
+
                 {/* Goal/Target character on the other side */}
                 <g>
                   <circle cx="350" cy="140" r="8" fill="#4ecdc4" />
@@ -430,7 +453,7 @@ export function BridgeGame() {
                     <text x="350" y="130" textAnchor="middle" fontSize="16">🎉</text>
                   )}
                 </g>
-                
+
                 {/* Broken bridge effect */}
                 {gameState.isBroken && (
                   <g className="animate-bounce">
@@ -457,10 +480,10 @@ export function BridgeGame() {
                   <span>{gameState.planks.filter(Boolean).length} / {getCurrentLevelRequiredPlanks().filter(Boolean).length}</span>
                 </div>
                 <div className="w-full bg-muted rounded-full h-2">
-                  <div 
+                  <div
                     className="bg-primary h-2 rounded-full transition-all duration-300"
-                    style={{ 
-                      width: `${(gameState.planks.filter(Boolean).length / getCurrentLevelRequiredPlanks().filter(Boolean).length) * 100}%` 
+                    style={{
+                      width: `${(gameState.planks.filter(Boolean).length / getCurrentLevelRequiredPlanks().filter(Boolean).length) * 100}%`
                     }}
                   />
                 </div>

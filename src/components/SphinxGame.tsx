@@ -1,11 +1,11 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from './gamecomp/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './gamecomp/ui/card';
 import { Alert, AlertDescription } from './gamecomp/ui/alert';
 import { Play, RotateCcw, CheckCircle, AlertTriangle, Eye } from 'lucide-react';
 import { ConditionalTips } from './ConditionalTips';
-import XP from './gamecomp/XP';
+import XPfunc from './gamecomp/XP';
 import { useXP } from '../contexts/XPcontext.tsx';
 import { useGameTwo } from '@/contexts/GameTwoContext.tsx';
 
@@ -158,7 +158,7 @@ const riddles: Riddle[] = [
 ];
 
 export function SphinxGame() {
-  const { setXP } = useXP();
+  const { XP, setXP } = useXP();
   const { GameTwo, setGameTwo } = useGameTwo(); // added this
   const [gameState, setGameState] = useState<GameState>({
     level: GameTwo,
@@ -300,9 +300,28 @@ const executeCode = async () => {
   }
 };
 
+  useEffect(() => {
+    const datToDataBase = async () => {
+    try {
+      await fetch('/api/add-xp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ xp: XP, sphinxLevel: GameTwo }),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+    if (XP > 0 || GameTwo > 0) { // Only call if there are changes
+      datToDataBase();
+      console.log("added sphinx data")
+    }
+
+  }, [{xp: XP, sphinxLevel: GameTwo}]);
+
   return (
     <div className="w-full max-w-6xl mx-auto p-6 space-y-6">
-      <XP/>
+      <XPfunc />
       <ConditionalTips />
 
       {/* Sphinx Header */}
